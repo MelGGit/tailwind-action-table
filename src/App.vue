@@ -79,6 +79,10 @@ const handleMouseLeaveEvent = () => {
   mouseEventRow.value = -1
 }
 
+const getHighlightState = (row: number, col: number): string | void => {
+  if ((row === mouseEventRow.value && col <= mouseEventCol.value) || (row <= mouseEventRow.value && col === mouseEventCol.value)) return '!bg-zinc-200'
+}
+
 const readMode = () => {
   activeButton.value = 0
   activeMode.value = 'read'
@@ -131,106 +135,147 @@ onUpdated(() => {
   <div class="w-full flex justify-center py-20 text-center tracking-wide">
     <table>
       <thead>
-        <tr>
+        <tr class="cursor-default">
           <th
             v-for="(head, i) in tableHead"
             :key="head"
             class="border border-gray-400 py-2 font-normal border-b-black border-b-2"
-            :class="isSunday(i, 4) === '' ? isHoliday(i, 1) === '' ? 'bg-gray-100' : isHoliday(i, 1) : isSunday(i, 4)"
+            :class="[isSunday(i, 4) === '' ? isHoliday(i, 1) === '' ? 'bg-gray-100' : isHoliday(i, 1) : isSunday(i, 4), getHighlightState(0, i)]"
           >{{ head }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr class="cursor-default">
           <td
             v-for="(item, i) in firstRow"
             :key="item"
-            class="border text-xs py-1 border-gray-400"
-            :class="isSunday(i, 4), isHoliday(i, 1)"
+            class="border text-xs py-2 border-gray-400"
+            :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(1, i)]"
+            @mouseenter="handleMouseEnterEvent(1, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
         </tr>
-        <tr>
+        <tr class="cursor-default">
           <td
             v-for="(item, i) in secondRow"
             :key="item"
-            class="border text-xs border-gray-400 py-1 text-gray-400 font-thin"
-            :class="isSunday(i, 4), isHoliday(i, 1)"
+            class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
+            :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(2, i)]"
+            @mouseenter="handleMouseEnterEvent(2, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
         </tr>
         <tr>
           <td
-            v-for="item in thirdRow"
+            v-for="(item, i) in thirdRow"
             :key="item"
             class="border border-gray-400 border-b-black border-b-2 px-2"
+            :class="getHighlightState(3, i)"
+            @mouseenter="handleMouseEnterEvent(3, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
           <td
             v-for="(x, i) in matrix[0]"
             :key="i"
             class="border border-gray-400 border-b-black border-b-2"
-            :class="isSunday(i, 6), isHoliday(i, -1)"
+            :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2)]"
+            @mouseenter="handleMouseEnterEvent(3, i + 2)"
+            @mouseleave="handleMouseLeaveEvent"
           >
             <input
               type="text"
               :disabled="activeMode === 'read'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[0][i]"
-              :class="isSunday(i, 6), isHoliday(i, -1)"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2)]"
               @change="sumOfMatrixRow(0)"
             />
           </td>
-          <td class="border border-gray-400 border-b-black border-b-2">
-            <input type="text" class="w-10 text-center py-2 px-2 pointer-events-none" :value="sumFirstMatrixRow" />
+          <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(3, 33)">
+            <input
+              :class="getHighlightState(3, 33)"
+              type="text"
+              disabled
+              class="w-10 text-center py-2 px-2"
+              :value="sumFirstMatrixRow"
+              @mouseenter="handleMouseEnterEvent(3, 33)"
+              @mouseleave="handleMouseLeaveEvent"
+            />
           </td>
         </tr>
-        <tr>
+        <tr class="cursor-default">
           <td
             v-for="(item, i) in fourthRow"
             :key="item"
-            class="border text-xs border-gray-400 py-1 text-gray-400 font-thin"
-            :class="isSunday(i, 4), isHoliday(i, 1)"
+            class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
+            :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(4, i)]"
+            @mouseenter="handleMouseEnterEvent(4, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
         </tr>
         <tr>
           <td
-            v-for="item in fifthRow"
+            v-for="(item, i) in fifthRow"
             :key="item"
             class="border border-gray-400 border-b-black border-b-2 px-2"
+            :class="getHighlightState(5, i)"
+            @mouseenter="handleMouseEnterEvent(5, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
           <td
             v-for="(x, i) in matrix[1]"
             :key="i"
             class="border border-gray-400 border-b-black border-b-2"
-            :class="isSunday(i, 6), isHoliday(i, -1)"
+            :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2)]"
+            @mouseenter="handleMouseEnterEvent(5, i + 2)"
+            @mouseleave="handleMouseLeaveEvent"
           >
             <input
               type="text"
               :disabled="activeMode === 'read'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[1][i]"
-              :class="isSunday(i, 6), isHoliday(i, -1)"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2)]"
               @change="sumOfMatrixRow(1)"
             />
           </td>
-          <td class="border border-gray-400 border-b-black border-b-2">
-            <input type="text" class="w-10 text-center py-2 px-2 pointer-events-none" :value="sumSecondMatrixRow" />
+          <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(5, 33)">
+            <input
+              :class="getHighlightState(5, 33)"
+              type="text"
+              disabled
+              class="w-10 text-center py-2 px-2"
+              :value="sumSecondMatrixRow"
+              @mouseenter="handleMouseEnterEvent(5, 33)"
+              @mouseleave="handleMouseLeaveEvent"
+            />
           </td>
         </tr>
-        <tr>
+        <tr class="cursor-default">
           <td
             v-for="(item, i) in sixthRow"
             :key="item"
-            class="border text-xs text-gray-400 font-thin border-gray-400 py-1"
-            :class="isSunday(i, 4), isHoliday(i, 1)"
+            class="border text-xs text-gray-400 font-thin border-gray-400 py-2"
+            :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(6, i)]"
+            @mouseenter="handleMouseEnterEvent(6, i)"
+            @mouseleave="handleMouseLeaveEvent"
           >{{ item }}</td>
         </tr>
-        <tr :class="mouseEventRow === 7 && '!bg-red-400'">
-          <td v-for="item in seventhRow" :key="item" class="border border-gray-400 px-2">{{ item }}</td>
+        <tr>
+          <td
+            v-for="(item, i) in seventhRow"
+            :key="item"
+            class="border border-gray-400 px-2"
+            :class="getHighlightState(7, i)"
+            @mouseenter="handleMouseEnterEvent(7, i)"
+            @mouseleave="handleMouseLeaveEvent"
+          >{{ item }}</td>
           <td
             v-for="(x, i) in matrix[2]"
             :key="i"
             class="border border-gray-400"
-            :class="isSunday(i, 6), isHoliday(i, -1)"
-            @mouseenter="handleMouseEnterEvent(7, i)"
+            :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2)]"
+            @mouseenter="handleMouseEnterEvent(7, i + 2)"
             @mouseleave="handleMouseLeaveEvent"
           >
             <input
@@ -238,12 +283,20 @@ onUpdated(() => {
               :disabled="activeMode === 'read'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[2][i]"
-              :class="isSunday(i, 6), isHoliday(i, -1)"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2)]"
               @change="sumOfMatrixRow(2)"
             />
           </td>
-          <td class="border border-gray-400">
-            <input type="text" class="w-10 text-center py-2 px-2 pointer-events-none" :value="sumThirdMatrixRow" />
+          <td class="border border-gray-400" :class="getHighlightState(7, 33)">
+            <input
+              :class="getHighlightState(7, 33)"
+              type="text"
+              disabled
+              class="w-10 text-center py-2 px-2"
+              :value="sumThirdMatrixRow"
+              @mouseenter="handleMouseEnterEvent(7, 33)"
+              @mouseleave="handleMouseLeaveEvent"
+            />
           </td>
         </tr>
       </tbody>
