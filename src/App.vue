@@ -102,29 +102,37 @@ onUpdated(() => {
           <td v-for="item in firstRow" :key="item" class="border text-xs py-1 border-gray-400">{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in secondRow" :key="item" class="border text-xs border-gray-400 opacity-40">{{ item }}</td>
+          <td v-for="item in secondRow" :key="item" class="border text-xs border-gray-400 opacity-40 py-1">{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in thirdRow" :key="item" class="border border-gray-400 border-b-black border-b-2">{{ item }}</td>
-          <td v-for="(x, i) in matrix[0]" :key="i" class="border border-gray-400 border-b-black border-b-2">
+          <td
+            v-for="item in thirdRow"
+            :key="item"
+            class="border border-gray-400 border-b-black border-b-2 py-2 px-2"
+          >{{ item }}</td>
+          <td v-for="(x, i) in matrix[0]" :key="i" class="border border-gray-400 border-b-black border-b-2 py-2">
             <input type="text" class="w-10 text-center" v-model.number="matrix[0][i]" />
           </td>
         </tr>
         <tr>
-          <td v-for="item in fourthRow" :key="item" class="border text-xs opacity-40 border-gray-400">{{ item }}</td>
+          <td v-for="item in fourthRow" :key="item" class="border text-xs opacity-40 border-gray-400 py-1">{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in fifthRow" :key="item" class="border border-gray-400 border-b-black border-b-2">{{ item }}</td>
-          <td v-for="(x, i) in matrix[1]" :key="i" class="border border-gray-400 border-b-black border-b-2">
+          <td
+            v-for="item in fifthRow"
+            :key="item"
+            class="border border-gray-400 border-b-black border-b-2 py-2 px-2"
+          >{{ item }}</td>
+          <td v-for="(x, i) in matrix[1]" :key="i" class="border border-gray-400 border-b-black border-b-2 py-2">
             <input type="text" class="w-10 text-center" v-model.number="matrix[1][i]" />
           </td>
         </tr>
         <tr>
-          <td v-for="item in sixthRow" :key="item" class="border text-xs opacity-40 border-gray-400">{{ item }}</td>
+          <td v-for="item in sixthRow" :key="item" class="border text-xs opacity-40 border-gray-400 py-1">{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in seventhRow" :key="item" class="border border-gray-400">{{ item }}</td>
-          <td v-for="(x, i) in matrix[2]" :key="i" class="border border-gray-400">
+          <td v-for="item in seventhRow" :key="item" class="border border-gray-400 py-2 px-2">{{ item }}</td>
+          <td v-for="(x, i) in matrix[2]" :key="i" class="border border-gray-400 py-2">
             <input type="text" class="w-10 text-center" v-model.number="matrix[2][i]" />
           </td>
         </tr>
