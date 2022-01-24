@@ -54,12 +54,12 @@ const sumOfMatrixRow = (matrixIndex: number) => {
 }
 
 const isSunday = (index: number, offset: number): string => {
-  if ((index + offset) % 7 === 0) return 'bg-neutral-200'
+  if ((index + offset) % 7 === 0) return '!bg-neutral-200'
   return ''
 }
 
 const isHoliday = (index: number, offset: number): string => {
-  if ((index - offset) === 1) return 'bg-green-200'
+  if ((index - offset) === 1) return '!bg-green-200'
   return ''
 }
 
@@ -142,7 +142,11 @@ onUpdated(() => {
           >{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in thirdRow" :key="item" class="border border-gray-400 border-b-black border-b-2">{{ item }}</td>
+          <td
+            v-for="item in thirdRow"
+            :key="item"
+            class="border border-gray-400 border-b-black border-b-2 px-2"
+          >{{ item }}</td>
           <td
             v-for="(x, i) in matrix[0]"
             :key="i"
@@ -171,7 +175,11 @@ onUpdated(() => {
           >{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in fifthRow" :key="item" class="border border-gray-400 border-b-black border-b-2">{{ item }}</td>
+          <td
+            v-for="item in fifthRow"
+            :key="item"
+            class="border border-gray-400 border-b-black border-b-2 px-2"
+          >{{ item }}</td>
           <td
             v-for="(x, i) in matrix[1]"
             :key="i"
@@ -200,7 +208,7 @@ onUpdated(() => {
           >{{ item }}</td>
         </tr>
         <tr>
-          <td v-for="item in seventhRow" :key="item" class="border border-gray-400">{{ item }}</td>
+          <td v-for="item in seventhRow" :key="item" class="border border-gray-400 px-2">{{ item }}</td>
           <td
             v-for="(x, i) in matrix[2]"
             :key="i"
