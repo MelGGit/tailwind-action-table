@@ -5,6 +5,7 @@ type modeEnum = 'read' | 'enter' | 'put' | 'shift'
 type weekdayShortsEnum = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So'
 const numberOfDaysInMonth = 31
 const rows = 3
+const putNumber = 5
 
 const activeButton = ref<number>(0)
 const activeMode = ref<modeEnum>('read')
@@ -14,6 +15,7 @@ const sumSecondMatrixRow = ref<number>(31)
 const sumThirdMatrixRow = ref<number>(31)
 const mouseEventRow = ref<number>(-1)
 const mouseEventCol = ref<number>(-1)
+const isHolding = ref<boolean>(false)
 
 const tableHead = ['Vertrag', 'Leistung', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), 'A']
 const firstRow = ['', 'Pflegeversicherung', ...createWeeKArray(5, numberOfDaysInMonth), '']
@@ -23,6 +25,8 @@ const fourthRow = ['', 'vormittags', ...Array.from(Array(numberOfDaysInMonth), (
 const fifthRow = ['SGB XI HH', 'LK5: Lagern/Betten']
 const sixthRow = ['', 'mittags', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), '']
 const seventhRow = ['SGB XI HH', 'LK17: Kl. Besorgungen']
+
+const cursorPointer = computed(() => activeMode.value === 'put' ? 'cursor-pointer' : '')
 
 function createValueMatrix(rows: number, columns: number): number[][] {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
@@ -80,7 +84,33 @@ const handleMouseLeaveEvent = () => {
 }
 
 const getHighlightState = (row: number, col: number): string | void => {
-  if ((row === mouseEventRow.value && col <= mouseEventCol.value) || (row <= mouseEventRow.value && col === mouseEventCol.value)) return '!bg-zinc-200'
+  if ((row === mouseEventRow.value && col <= mouseEventCol.value) || (row <= mouseEventRow.value && col === mouseEventCol.value)) return '!bg-zinc-300'
+}
+
+const updateValueOnPut = (row: number, index: number) => {
+  matrix.value[row][index] = putNumber
+  sumOfMatrixRow(row)
+}
+
+const handlePutStartEvent = (row: number, index: number, event: DragEvent) => {
+  updateValueOnPut(row, index)
+  const img = document.createElement('img')
+  event.dataTransfer?.setDragImage(img, 0, 0)
+  // if (event.target instanceof HTMLInputElement && event.target.parentElement instanceof HTMLTableCellElement) {
+
+  // }
+}
+
+const handlePutEvent = (row: number, index: number, event: DragEvent) => {
+  updateValueOnPut(row, index)
+  sumOfMatrixRow(2)
+  if (event.target instanceof HTMLInputElement && event.target.parentElement instanceof HTMLTableCellElement) {
+    event.target.focus()
+  }
+}
+
+const handleEndPutEvent = () => {
+  isHolding.value = false
 }
 
 const readMode = () => {
@@ -99,9 +129,6 @@ const shiftMode = () => {
   activeButton.value = 3
   activeMode.value = 'shift'
 }
-onUpdated(() => {
-  console.log(matrix.value)
-})
 
 </script>
 
@@ -185,10 +212,17 @@ onUpdated(() => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
+              :readonly="activeMode === 'put'"
+              :draggable="activeMode === 'put'"
+              :dropzone="activeMode === 'put'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[0][i]"
-              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2)]"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(0)"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(0, i, $event) : null"
+              @dragenter="activeMode === 'put' ? handlePutEvent(0, i, $event) : null, handleMouseEnterEvent(3, i + 2)"
+              @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
+              @click="activeMode === 'put' ? updateValueOnPut(0, i) : null"
             />
           </td>
           <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(3, 33)">
@@ -233,10 +267,17 @@ onUpdated(() => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
+              :readonly="activeMode === 'put'"
+              :draggable="activeMode === 'put'"
+              :dropzone="activeMode === 'put'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[1][i]"
-              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2)]"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(1)"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(1, i, $event) : null"
+              @dragenter="activeMode === 'put' ? handlePutEvent(1, i, $event) : null, handleMouseEnterEvent(5, i + 2)"
+              @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
+              @click="activeMode === 'put' ? updateValueOnPut(1, i) : null"
             />
           </td>
           <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(5, 33)">
@@ -281,10 +322,17 @@ onUpdated(() => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
+              :readonly="activeMode === 'put'"
+              :draggable="activeMode === 'put'"
+              :dropzone="activeMode === 'put'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[2][i]"
-              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2)]"
+              :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(2)"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(2, i, $event) : null"
+              @dragenter="activeMode === 'put' ? handlePutEvent(2, i, $event) : null, handleMouseEnterEvent(7, i + 2)"
+              @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
+              @click="activeMode === 'put' ? updateValueOnPut(2, i) : null"
             />
           </td>
           <td class="border border-gray-400" :class="getHighlightState(7, 33)">
