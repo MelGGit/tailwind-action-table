@@ -156,29 +156,29 @@ const shiftMode = () => {
 
 <template>
   <div class="w-full min-h-max">
-    <div class="w-full flex justify-center gap-4 pt-10">
+    <div class="w-full flex justify-center pt-10">
       <button
         :disabled="activeButton === 0"
         :class="activeButton === 0 && 'bg-blue-500'"
-        class="border px-4 py-2 rounded hover:bg-blue-500"
+        class="border-t border-l border-b px-4 py-2 rounded-tl rounded-bl hover:bg-blue-500"
         @click="readMode"
       >Lesen</button>
       <button
         :disabled="activeButton === 1"
         :class="activeButton === 1 && 'bg-blue-500'"
-        class="border px-4 py-2 rounded hover:bg-blue-500"
+        class="border-l border-t border-b px-4 py-2 hover:bg-blue-500"
         @click="enterMode"
       >Eingabe</button>
       <button
         :disabled="activeButton === 2"
         :class="activeButton === 2 && 'bg-blue-500'"
-        class="border px-4 py-2 rounded hover:bg-blue-500"
+        class="border px-4 py-2 hover:bg-blue-500"
         @click="putMode"
       >Setzen</button>
       <button
         :disabled="activeButton === 3"
         :class="activeButton === 3 && 'bg-blue-500'"
-        class="border px-4 py-2 rounded hover:bg-blue-500"
+        class="border-b border-r border-t px-4 py-2 rounded-tr rounded-br hover:bg-blue-500"
         @click="shiftMode"
       >Verschieben</button>
     </div>
