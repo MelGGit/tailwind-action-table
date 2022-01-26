@@ -1,4 +1,4 @@
-# Vue 3 + Typescript + Table with Excellike Funtions
+# Vue 3 + Typescript + Table with Excel like Funtions
 
 ## Run Locally
 
