@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 type modeEnum = 'read' | 'enter' | 'put' | 'shift'
 type weekdayShortsEnum = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So'
@@ -15,7 +15,6 @@ const sumSecondMatrixRow = ref<number>(31)
 const sumThirdMatrixRow = ref<number>(31)
 const mouseEventRow = ref<number>(-1)
 const mouseEventCol = ref<number>(-1)
-const isHolding = ref<boolean>(false)
 const putInput = ref<HTMLInputElement>()
 
 const tableHead = ['Vertrag', 'Leistung', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), 'A']
