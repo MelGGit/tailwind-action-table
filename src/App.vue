@@ -26,7 +26,7 @@ const fifthRow = ['SGB XI HH', 'LK5: Lagern/Betten']
 const sixthRow = ['', 'mittags', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), '']
 const seventhRow = ['SGB XI HH', 'LK17: Kl. Besorgungen']
 
-const cursorPointer = computed(() => activeMode.value === 'put' ? 'cursor-pointer' : '')
+const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.value === 'shift' ? 'cursor-pointer' : '')
 
 function createValueMatrix(rows: number, columns: number): number[][] {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
@@ -47,8 +47,7 @@ function createWeeKArray(startDay: number, numberOfDays: number): weekdayShortsE
 }
 
 const reduceFunction = (accumulator: number, currentValue: number | string): number => {
-  if (typeof currentValue === 'string') currentValue = 0
-  return accumulator + currentValue
+  return Number(accumulator) + Number(currentValue)
 }
 
 const sumOfMatrixRow = (matrixIndex: number) => {
@@ -103,14 +102,36 @@ const handlePutStartEvent = (row: number, index: number, event: DragEvent) => {
 
 const handlePutEvent = (row: number, index: number, event: DragEvent) => {
   updateValueOnPut(row, index)
-  sumOfMatrixRow(2)
   if (event.target instanceof HTMLInputElement && event.target.parentElement instanceof HTMLTableCellElement) {
     event.target.focus()
   }
 }
 
-const handleEndPutEvent = () => {
-  isHolding.value = false
+const handleShiftDragStart = (row: number, col: number, event: DragEvent) => {
+  if (!event.dataTransfer) return
+  if (!event.target || !(event.target instanceof HTMLInputElement)) return
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData('row/col', row.toString() + col.toString())
+}
+
+const handleShiftDragOver = (event: DragEvent) => {
+  if (!event.dataTransfer) return
+  event.dataTransfer.dropEffect = "move"
+}
+
+const handleShiftDrop = (row: number, col: number, event: DragEvent) => {
+  if (!event.dataTransfer) return
+  if (!event.target || !(event.target instanceof HTMLInputElement)) return
+  event.target.focus()
+  const data = event.dataTransfer.getData('row/col')
+  const numberToAdd = matrix.value[Number(data.substring(0, 1))][Number(data.substring(1))]
+  //@ts-ignore
+  matrix.value[Number(data.substring(0, 1))][Number(data.substring(1))] = ''
+  const baseValue = matrix.value[row][col]
+  const sumToAdd = Number(baseValue) + numberToAdd
+  matrix.value[row][col] = sumToAdd
+  sumOfMatrixRow(row)
+  if (Number(data.substring(0, 1)) !== row) sumOfMatrixRow(Number(data.substring(0, 1)))
 }
 
 const readMode = () => {
@@ -212,14 +233,16 @@ const shiftMode = () => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
-              :readonly="activeMode === 'put'"
-              :draggable="activeMode === 'put'"
-              :dropzone="activeMode === 'put'"
+              :readonly="activeMode === 'put' || activeMode === 'shift'"
+              :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[0][i]) > 0)"
+              :dropzone="activeMode === 'put' || activeMode === 'shift'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[0][i]"
               :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(0)"
-              @dragstart="activeMode === 'put' ? handlePutStartEvent(0, i, $event) : null"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(0, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(0, i, $event) : null"
+              @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
+              @drop="activeMode === 'shift' ? handleShiftDrop(0, i, $event) : null"
               @dragenter="activeMode === 'put' ? handlePutEvent(0, i, $event) : null, handleMouseEnterEvent(3, i + 2)"
               @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
               @click="activeMode === 'put' ? updateValueOnPut(0, i) : null"
@@ -267,14 +290,16 @@ const shiftMode = () => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
-              :readonly="activeMode === 'put'"
-              :draggable="activeMode === 'put'"
-              :dropzone="activeMode === 'put'"
+              :readonly="activeMode === 'put' || activeMode === 'shift'"
+              :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[1][i]) > 0)"
+              :dropzone="activeMode === 'put' || activeMode === 'shift'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[1][i]"
               :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(1)"
-              @dragstart="activeMode === 'put' ? handlePutStartEvent(1, i, $event) : null"
+              @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
+              @drop="activeMode === 'shift' ? handleShiftDrop(1, i, $event) : null"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(1, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(1, i, $event) : null"
               @dragenter="activeMode === 'put' ? handlePutEvent(1, i, $event) : null, handleMouseEnterEvent(5, i + 2)"
               @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
               @click="activeMode === 'put' ? updateValueOnPut(1, i) : null"
@@ -322,14 +347,16 @@ const shiftMode = () => {
             <input
               type="text"
               :disabled="activeMode === 'read'"
-              :readonly="activeMode === 'put'"
-              :draggable="activeMode === 'put'"
-              :dropzone="activeMode === 'put'"
+              :readonly="activeMode === 'put' || activeMode === 'shift'"
+              :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[2][i]) > 0)"
+              :dropzone="activeMode === 'put' || activeMode === 'shift'"
               class="w-10 text-center py-2 px-2"
               v-model.number="matrix[2][i]"
               :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2), cursorPointer]"
               @change="sumOfMatrixRow(2)"
-              @dragstart="activeMode === 'put' ? handlePutStartEvent(2, i, $event) : null"
+              @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
+              @drop="activeMode === 'shift' ? handleShiftDrop(2, i, $event) : null"
+              @dragstart="activeMode === 'put' ? handlePutStartEvent(2, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(2, i, $event) : null"
               @dragenter="activeMode === 'put' ? handlePutEvent(2, i, $event) : null, handleMouseEnterEvent(7, i + 2)"
               @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
               @click="activeMode === 'put' ? updateValueOnPut(2, i) : null"
