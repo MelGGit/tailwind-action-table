@@ -5,8 +5,8 @@ type modeEnum = 'read' | 'enter' | 'put' | 'shift'
 type weekdayShortsEnum = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So'
 const numberOfDaysInMonth = 31
 const rows = 3
-const putNumber = 5
 
+const putNumber = ref<number>(1)
 const activeButton = ref<number>(0)
 const activeMode = ref<modeEnum>('read')
 const matrix = ref<number[][]>(createValueMatrix(rows, numberOfDaysInMonth))
@@ -16,6 +16,7 @@ const sumThirdMatrixRow = ref<number>(31)
 const mouseEventRow = ref<number>(-1)
 const mouseEventCol = ref<number>(-1)
 const isHolding = ref<boolean>(false)
+const putInput = ref<HTMLInputElement>()
 
 const tableHead = ['Vertrag', 'Leistung', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), 'A']
 const firstRow = ['', 'Pflegeversicherung', ...createWeeKArray(5, numberOfDaysInMonth), '']
@@ -87,7 +88,7 @@ const getHighlightState = (row: number, col: number): string | void => {
 }
 
 const updateValueOnPut = (row: number, index: number) => {
-  matrix.value[row][index] = putNumber
+  matrix.value[row][index] = putNumber.value
   sumOfMatrixRow(row)
 }
 
@@ -145,6 +146,7 @@ const enterMode = () => {
 const putMode = () => {
   activeButton.value = 2
   activeMode.value = 'put'
+  if (putInput.value) putInput.value.focus()
 }
 const shiftMode = () => {
   activeButton.value = 3
@@ -154,33 +156,38 @@ const shiftMode = () => {
 </script>
 
 <template>
-  <div class="w-full flex justify-center gap-4 pt-10">
-    <button
-      :disabled="activeButton === 0"
-      :class="activeButton === 0 && 'bg-blue-500'"
-      class="border px-4 py-2 rounded hover:bg-blue-500"
-      @click="readMode"
-    >Lesen</button>
-    <button
-      :disabled="activeButton === 1"
-      :class="activeButton === 1 && 'bg-blue-500'"
-      class="border px-4 py-2 rounded hover:bg-blue-500"
-      @click="enterMode"
-    >Eingabe</button>
-    <button
-      :disabled="activeButton === 2"
-      :class="activeButton === 2 && 'bg-blue-500'"
-      class="border px-4 py-2 rounded hover:bg-blue-500"
-      @click="putMode"
-    >Setzen</button>
-    <button
-      :disabled="activeButton === 3"
-      :class="activeButton === 3 && 'bg-blue-500'"
-      class="border px-4 py-2 rounded hover:bg-blue-500"
-      @click="shiftMode"
-    >Verschieben</button>
+  <div class="w-full min-h-max">
+    <div class="w-full flex justify-center gap-4 pt-10">
+      <button
+        :disabled="activeButton === 0"
+        :class="activeButton === 0 && 'bg-blue-500'"
+        class="border px-4 py-2 rounded hover:bg-blue-500"
+        @click="readMode"
+      >Lesen</button>
+      <button
+        :disabled="activeButton === 1"
+        :class="activeButton === 1 && 'bg-blue-500'"
+        class="border px-4 py-2 rounded hover:bg-blue-500"
+        @click="enterMode"
+      >Eingabe</button>
+      <button
+        :disabled="activeButton === 2"
+        :class="activeButton === 2 && 'bg-blue-500'"
+        class="border px-4 py-2 rounded hover:bg-blue-500"
+        @click="putMode"
+      >Setzen</button>
+      <button
+        :disabled="activeButton === 3"
+        :class="activeButton === 3 && 'bg-blue-500'"
+        class="border px-4 py-2 rounded hover:bg-blue-500"
+        @click="shiftMode"
+      >Verschieben</button>
+    </div>
+    <div class="w-full flex justify-center mt-4" :class="activeMode === 'put' ? '' : 'opacity-0'">
+      <input type="text" class="bg-gray-200 rounded text-center py-1" v-model.number="putNumber" ref="putInput" />
+    </div>
   </div>
-  <div class="w-full flex justify-center py-20 text-center tracking-wide">
+  <div class="w-full flex justify-center py-10 text-center tracking-wide">
     <table>
       <thead>
         <tr class="cursor-default">
