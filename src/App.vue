@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-
+type matrixCellType = number | string
+type matrixType = matrixCellType[][]
 type modeEnum = 'read' | 'enter' | 'put' | 'shift'
 type weekdayShortsEnum = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So'
 const numberOfDaysInMonth = 31
@@ -9,10 +10,10 @@ const rows = 3
 const putNumber = ref<number>(1)
 const activeButton = ref<number>(0)
 const activeMode = ref<modeEnum>('read')
-const matrix = ref<number[][]>(createValueMatrix(rows, numberOfDaysInMonth))
-const sumFirstMatrixRow = ref<number>(31)
-const sumSecondMatrixRow = ref<number>(31)
-const sumThirdMatrixRow = ref<number>(31)
+const matrix = ref<matrixType>(createValueMatrix(rows, numberOfDaysInMonth))
+const sumFirstMatrixRow = ref<matrixCellType>(31)
+const sumSecondMatrixRow = ref<matrixCellType>(31)
+const sumThirdMatrixRow = ref<matrixCellType>(31)
 const mouseEventRow = ref<number>(-1)
 const mouseEventCol = ref<number>(-1)
 const putInput = ref<HTMLInputElement>()
@@ -28,7 +29,7 @@ const seventhRow = ['SGB XI HH', 'LK17: Kl. Besorgungen']
 
 const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.value === 'shift' ? 'cursor-pointer' : '')
 
-function createValueMatrix(rows: number, columns: number): number[][] {
+function createValueMatrix(rows: number, columns: number): matrixType {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
 }
 
@@ -46,7 +47,7 @@ function createWeeKArray(startDay: number, numberOfDays: number): weekdayShortsE
   return resultArray
 }
 
-const reduceFunction = (accumulator: number, currentValue: number | string): number => {
+const reduceFunction = (accumulator: number | string, currentValue: number | string): number => {
   return Number(accumulator) + Number(currentValue)
 }
 
@@ -125,10 +126,9 @@ const handleShiftDrop = (row: number, col: number, event: DragEvent) => {
   event.target.focus()
   const data = event.dataTransfer.getData('row/col')
   const numberToAdd = matrix.value[Number(data.substring(0, 1))][Number(data.substring(1))]
-  //@ts-ignore
   matrix.value[Number(data.substring(0, 1))][Number(data.substring(1))] = ''
   const baseValue = matrix.value[row][col]
-  const sumToAdd = Number(baseValue) + numberToAdd
+  const sumToAdd = Number(baseValue) + Number(numberToAdd)
   matrix.value[row][col] = sumToAdd
   sumOfMatrixRow(row)
   if (Number(data.substring(0, 1)) !== row) sumOfMatrixRow(Number(data.substring(0, 1)))
