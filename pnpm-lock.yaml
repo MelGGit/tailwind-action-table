@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@iconify-json/bi': ^1.0.10
   '@iconify-json/bx': ^1.0.3
   '@iconify-json/carbon': ^1.0.12
   '@iconify-json/clarity': ^1.0.1
@@ -29,6 +30,7 @@ dependencies:
   vue: 3.2.29
 
 devDependencies:
+  '@iconify-json/bi': 1.0.10
   '@iconify-json/bx': 1.0.3
   '@iconify-json/carbon': 1.0.14
   '@iconify-json/clarity': 1.0.1
@@ -119,6 +121,12 @@ packages:
 
   /@emmetio/scanner/1.0.0:
     resolution: {integrity: sha512-8HqW8EVqjnCmWXVpqAOZf+EGESdkR27odcMMMGefgKXtar00SoYNSryGv//TELI4T3QFsECo78p+0lmalk/CFA==}
+    dev: true
+
+  /@iconify-json/bi/1.0.10:
+    resolution: {integrity: sha512-mvVWW68kRup2ZP2UCmxMBlUs46tmYqZyCvfnSIc/g7TwSZn4BFihazirNL0nOJS2dcZy+lhh9SouQltyuLIjfw==}
+    dependencies:
+      '@iconify/types': 1.0.12
     dev: true
 
   /@iconify-json/bx/1.0.3:

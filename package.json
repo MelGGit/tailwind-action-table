@@ -11,6 +11,7 @@
     "vue": "^3.2.25"
   },
   "devDependencies": {
+    "@iconify-json/bi": "^1.0.10",
     "@iconify-json/bx": "^1.0.3",
     "@iconify-json/carbon": "^1.0.12",
     "@iconify-json/clarity": "^1.0.1",
