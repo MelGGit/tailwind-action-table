@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import ChevronLeft from '~icons/carbon/chevron-left'
 import ChevronRight from '~icons/carbon/chevron-right'
 import DocumentIcon from '~icons/ion/document-text-sharp'
@@ -18,7 +18,7 @@ import PointerIcon from '~icons/clarity/cursor-hand-solid'
 import OmniDirecIcon from '~icons/bx/bx-move'
 
 
-type modeEnum = 'read' | 'enter' | 'put' | 'shift'
+type modeEnum = 'read' | 'enter' | 'put' | 'shift' | 'attribute'
 type weekdayShortsEnum = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So'
 const numberOfDaysInMonth = 31
 const rows = 3
@@ -27,6 +27,7 @@ const putNumber = ref<number>(1)
 const activeButton = ref<number>(0)
 const activeMode = ref<modeEnum>('read')
 const matrix = ref<number[][]>(createValueMatrix(rows, numberOfDaysInMonth))
+const attributeMatrix = reactive<Set<string>[][]>(createAttributeMatrix(rows, numberOfDaysInMonth))
 const sumFirstMatrixRow = ref<number>(31)
 const sumSecondMatrixRow = ref<number>(31)
 const sumThirdMatrixRow = ref<number>(31)
@@ -47,6 +48,10 @@ const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.va
 
 function createValueMatrix(rows: number, columns: number): number[][] {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
+}
+function createAttributeMatrix(rows: number, columns: number): Set<string>[][] {
+  return Array.from(Array(rows), () => Array.from(Array(columns), () => new Set())
+  )
 }
 
 function createWeeKArray(startDay: number, numberOfDays: number): weekdayShortsEnum[] {
@@ -113,7 +118,6 @@ const handlePutStartEvent = (row: number, index: number, event: DragEvent) => {
   const img = document.createElement('img')
   event.dataTransfer?.setDragImage(img, 0, 0)
   // if (event.target instanceof HTMLInputElement && event.target.parentElement instanceof HTMLTableCellElement) {
-
   // }
 }
 
@@ -168,6 +172,10 @@ const shiftMode = () => {
   activeButton.value = 3
   activeMode.value = 'shift'
 }
+const attributeMode = () => {
+  activeButton.value = 4
+  activeMode.value = 'attribute'
+}
 
 </script>
 
@@ -176,6 +184,7 @@ const shiftMode = () => {
     <div class="flex justify-between items-center mb-4 text-white">
       <div class="flex items-center gap-10 text-lg">
         <Logo width="50" height="50" />
+        <span v-if="attributeMatrix[0][1].size > 0">Has Entries</span>
         <span>Dashboard</span>
         <span>Patienten</span>
         <span>Mitarbeiter</span>
@@ -248,7 +257,9 @@ const shiftMode = () => {
           <PrintIcon width="30" height="30" />
           <TrashIcon width="30" height="30" />
           <LineIcon width="30" height="30" />
-          <PuzzleIcon width="30" height="30" />
+          <button @click="attributeMode">
+            <PuzzleIcon width="30" height="30" />
+          </button>
           <PlusIcon width="30" height="30" />
         </div>
       </div>
@@ -305,7 +316,7 @@ const shiftMode = () => {
                 <input
                   type="text"
                   :disabled="activeMode === 'read'"
-                  :readonly="activeMode === 'put' || activeMode === 'shift'"
+                  :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[0][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
@@ -362,7 +373,7 @@ const shiftMode = () => {
                 <input
                   type="text"
                   :disabled="activeMode === 'read'"
-                  :readonly="activeMode === 'put' || activeMode === 'shift'"
+                  :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[1][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
@@ -419,7 +430,7 @@ const shiftMode = () => {
                 <input
                   type="text"
                   :disabled="activeMode === 'read'"
-                  :readonly="activeMode === 'put' || activeMode === 'shift'"
+                  :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[2][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
