@@ -12,6 +12,10 @@ import ProfileIcon from '~icons/healthicons/ui-user-profile'
 import TriLinesIcon from '~icons/el/lines'
 import TriPointsIcon from '~icons/fluent/more-vertical-32-filled'
 import Logo from '~icons/tabler/box-multiple'
+import EyeIcon from '~icons/fa-regular/eye'
+import KeyboardIcon from '~icons/carbon/keyboard'
+import PointerIcon from '~icons/clarity/cursor-hand-solid'
+import OmniDirecIcon from '~icons/bx/bx-move'
 
 
 type modeEnum = 'read' | 'enter' | 'put' | 'shift'
@@ -170,7 +174,7 @@ const shiftMode = () => {
 <template>
   <div class="w-full h-screen px-10 py-5 bg-dark-blue overflow-hidden">
     <div class="flex justify-between items-center mb-4 text-white">
-      <div class="flex items-center gap-6 text-lg">
+      <div class="flex items-center gap-10 text-lg">
         <Logo width="50" height="50" />
         <span>Dashboard</span>
         <span>Patienten</span>
@@ -180,45 +184,55 @@ const shiftMode = () => {
       <TriPointsIcon width="30" height="30" class="mr-[-10px]" />
     </div>
     <div class="w-full border-b border-b-gray-600 mb-4"></div>
-    <div class="w-full flex justify-between items-center text-white mb-10">
+    <div class="w-full flex justify-between items-center text-white mb-16">
       <div class="flex items-center text-2xl gap-4">
         <ProfileIcon width="40" height="40" />Klaus Klausen
         <TriLinesIcon width="15" height="15" />
       </div>
       <h2 class="text-2xl">Leistungsnachweis</h2>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 font-thin">
         <span>Abrechnung</span>
-        <ChevronRight width="10" height="10" />
+        <ChevronRight width="15" height="15" />
         <span>Leistungsnachweis</span>
       </div>
     </div>
-    <div class="w-full px-10 h-full bg-white rounded-xl">
+    <div class="w-full px-10 py-10 h-full bg-white rounded-xl relative">
       <div class="w-full min-h-max">
-        <div class="w-full flex justify-center pt-10">
-          <button
-            :disabled="activeButton === 0"
-            :class="activeButton === 0 && 'bg-dark-blue text-white'"
-            class="border-t border-l border-b px-4 py-2 rounded-tl-xl rounded-bl-xl hover:bg-blue-500"
-            @click="readMode"
-          >Lesen</button>
-          <button
-            :disabled="activeButton === 1"
-            :class="activeButton === 1 && 'bg-blue-500'"
-            class="border-l border-t border-b px-4 py-2 hover:bg-blue-500"
-            @click="enterMode"
-          >Eingabe</button>
-          <button
-            :disabled="activeButton === 2"
-            :class="activeButton === 2 && 'bg-blue-500'"
-            class="border px-4 py-2 hover:bg-blue-500"
-            @click="putMode"
-          >Setzen</button>
-          <button
-            :disabled="activeButton === 3"
-            :class="activeButton === 3 && 'bg-blue-500'"
-            class="border-b border-r border-t px-4 py-2 rounded-tr-xl rounded-br-xl hover:bg-blue-500"
-            @click="shiftMode"
-          >Verschieben</button>
+        <div class="w-full flex justify-center absolute top-[-2rem] left-0">
+          <div class="flex justify-center border-black border rounded-xl overflow-hidden shadow-2xl">
+            <button
+              :disabled="activeButton === 0"
+              :class="activeButton === 0 ? 'bg-dark-blue text-white' : 'bg-bg-accent'"
+              class="px-4 py-2 flex flex-col justify-center items-center"
+              @click="readMode"
+            >
+              <EyeIcon />Lesen
+            </button>
+            <button
+              :disabled="activeButton === 1"
+              :class="activeButton === 1 ? 'bg-dark-blue text-white' : 'bg-bg-accent'"
+              class="px-4 py-2 flex flex-col justify-center items-center"
+              @click="enterMode"
+            >
+              <KeyboardIcon />Eingabe
+            </button>
+            <button
+              :disabled="activeButton === 2"
+              :class="activeButton === 2 ? 'bg-dark-blue text-white' : 'bg-bg-accent'"
+              class="px-4 py-2 flex flex-col justify-center items-center"
+              @click="putMode"
+            >
+              <PointerIcon />Setzen
+            </button>
+            <button
+              :disabled="activeButton === 3"
+              :class="activeButton === 3 ? 'bg-dark-blue text-white' : 'bg-bg-accent'"
+              class="px-4 py-2 flex flex-col justify-center items-center"
+              @click="shiftMode"
+            >
+              <OmniDirecIcon />Verschieben
+            </button>
+          </div>
         </div>
         <div class="w-full flex justify-center mt-4" :class="activeMode === 'put' ? '' : 'opacity-0'">
           <input type="text" class="bg-gray-200 rounded text-center py-1" v-model.number="putNumber" ref="putInput" />

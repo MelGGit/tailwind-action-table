@@ -1,8 +1,11 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@iconify-json/bx': ^1.0.3
   '@iconify-json/carbon': ^1.0.12
+  '@iconify-json/clarity': ^1.0.1
   '@iconify-json/el': ^1.0.1
+  '@iconify-json/fa-regular': ^1.0.3
   '@iconify-json/fa-solid': ^1.0.3
   '@iconify-json/fluent': ^1.0.15
   '@iconify-json/healthicons': ^1.0.3
@@ -26,8 +29,11 @@ dependencies:
   vue: 3.2.28
 
 devDependencies:
+  '@iconify-json/bx': 1.0.3
   '@iconify-json/carbon': 1.0.12
+  '@iconify-json/clarity': 1.0.1
   '@iconify-json/el': 1.0.1
+  '@iconify-json/fa-regular': 1.0.3
   '@iconify-json/fa-solid': 1.0.3
   '@iconify-json/fluent': 1.0.15
   '@iconify-json/healthicons': 1.0.3
@@ -115,14 +121,32 @@ packages:
     resolution: {integrity: sha512-8HqW8EVqjnCmWXVpqAOZf+EGESdkR27odcMMMGefgKXtar00SoYNSryGv//TELI4T3QFsECo78p+0lmalk/CFA==}
     dev: true
 
+  /@iconify-json/bx/1.0.3:
+    resolution: {integrity: sha512-nwUxwOwocTp5u+KcBUraqEXiC7VG6niL6RQIdbLsRjZwouxayyVXPIkBPwMEmxpcTk1SA8Jh52MI+Scex1wJSA==}
+    dependencies:
+      '@iconify/types': 1.0.12
+    dev: true
+
   /@iconify-json/carbon/1.0.12:
     resolution: {integrity: sha512-wqO/tnPis6BRxY9QP2Wqprfnb90dPr3O0LBkaG7e/nE5C7KySrLEweBoTn129muENM40wwHCJ6hqzXrmgfhH/A==}
     dependencies:
       '@iconify/types': 1.0.12
     dev: true
 
+  /@iconify-json/clarity/1.0.1:
+    resolution: {integrity: sha512-sidMad7j89gRBmclZ6WQUDv7NSSzMGlJsz0tarHJnM67ObPOrM9hkdyIi9LUbc8dg5rnk+qi669nqdBE2NEGfg==}
+    dependencies:
+      '@iconify/types': 1.0.12
+    dev: true
+
   /@iconify-json/el/1.0.1:
     resolution: {integrity: sha512-P9T6JbM2Z0eaz3zkqWMCUNvaSYRbOIheI20g4gYFZ8jAXe5DEFxSWZEREJtexquubnCICt20IPSowQxGBGORYQ==}
+    dependencies:
+      '@iconify/types': 1.0.12
+    dev: true
+
+  /@iconify-json/fa-regular/1.0.3:
+    resolution: {integrity: sha512-Z499BziCHE/onF//gCC4N9nErp5O0hXjXqdB12WYww23PC04EMVZIPUw+FWvWoNtpuAEEx8JDZxL5I7/qVjxeg==}
     dependencies:
       '@iconify/types': 1.0.12
     dev: true
