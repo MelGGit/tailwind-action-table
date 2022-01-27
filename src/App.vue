@@ -189,7 +189,7 @@ const shiftMode = () => {
         <ProfileIcon width="40" height="40" />Klaus Klausen
         <TriLinesIcon width="15" height="15" />
       </div>
-      <h2 class="text-2xl tracking-wide">Leistungsnachweis</h2>
+      <h2 class="text-3xl tracking-wide">Leistungsnachweis</h2>
       <div class="flex items-center gap-1 font-thin text-sm">
         <span>Abrechnung</span>
         <ChevronRight width="15" height="15" />
