@@ -172,7 +172,7 @@ const shiftMode = () => {
 </script>
 
 <template>
-  <div class="w-full h-screen px-10 py-5 bg-dark-blue overflow-hidden">
+  <div class="w-full h-screen px-10 py-5 test overflow-hidden">
     <div class="flex justify-between items-center mb-4 text-white">
       <div class="flex items-center gap-10 text-lg">
         <Logo width="50" height="50" />
@@ -189,14 +189,14 @@ const shiftMode = () => {
         <ProfileIcon width="40" height="40" />Klaus Klausen
         <TriLinesIcon width="15" height="15" />
       </div>
-      <h2 class="text-2xl">Leistungsnachweis</h2>
-      <div class="flex items-center gap-2 font-thin">
+      <h2 class="text-2xl tracking-wide">Leistungsnachweis</h2>
+      <div class="flex items-center gap-1 font-thin text-sm">
         <span>Abrechnung</span>
         <ChevronRight width="15" height="15" />
         <span>Leistungsnachweis</span>
       </div>
     </div>
-    <div class="w-full px-10 py-10 h-full bg-white rounded-xl relative">
+    <div class="w-full px-10 py-10 h-[75%] bg-white rounded-xl relative shadow-xl">
       <div class="w-full min-h-max">
         <div class="w-full flex justify-center absolute top-[-2rem] left-0">
           <div class="flex justify-center border-black border rounded-xl overflow-hidden shadow-2xl">
@@ -450,7 +450,22 @@ const shiftMode = () => {
         </table>
       </div>
     </div>
+    <div class="w-full flex justify-end items-end mt-8 text-sm opacity-40 gap-4">
+      <span>Datenschutz</span>
+      •
+      <span>Impressum</span>
+    </div>
   </div>
 </template>
 
- <!-- <input type="text" class="w-10 text-center" v-model.number="matrix[0][0]" /> -->
+<style>
+.test {
+  background: linear-gradient(
+    to bottom,
+    #1d2230 0%,
+    #1d2230 38%,
+    white 38%,
+    white 100%
+  );
+}
+</style>
