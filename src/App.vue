@@ -16,6 +16,7 @@ import EyeIcon from '~icons/fa-regular/eye'
 import KeyboardIcon from '~icons/carbon/keyboard'
 import PointerIcon from '~icons/clarity/cursor-hand-solid'
 import OmniDirecIcon from '~icons/bx/bx-move'
+import CornerLowerRightIcon from '~icons/vaadin/corner-lower-right'
 
 
 type modeEnum = 'read' | 'enter' | 'put' | 'shift' | 'attribute'
@@ -34,6 +35,9 @@ const sumThirdMatrixRow = ref<number>(31)
 const mouseEventRow = ref<number>(-1)
 const mouseEventCol = ref<number>(-1)
 const putInput = ref<HTMLInputElement>()
+const modal = ref<HTMLDivElement>()
+const showModal = ref<boolean>(false)
+const modalValues = ref<string[]>()
 
 const tableHead = ['Vertrag', 'Leistung', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), 'A']
 const firstRow = ['', 'Pflegeversicherung', ...createWeeKArray(5, numberOfDaysInMonth), '']
@@ -155,6 +159,21 @@ const handleShiftDrop = (row: number, col: number, event: DragEvent) => {
   if (Number(data.substring(0, 1)) !== row) sumOfMatrixRow(Number(data.substring(0, 1)))
 }
 
+const handleShowModal = (row: number, col: number, event: MouseEvent) => {
+  if (!event.target || !(event.target instanceof HTMLTableCellElement)) return
+  modalValues.value = [...attributeMatrix[row][col]]
+  const { left, bottom } = event.target.getBoundingClientRect()
+  if (!modal.value) return
+  modal.value.style.top = (bottom + 2).toString() + 'px'
+  modal.value.style.left = left.toString() + 'px'
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  modalValues.value = []
+}
+
 const readMode = () => {
   activeButton.value = 0
   activeMode.value = 'read'
@@ -177,14 +196,35 @@ const attributeMode = () => {
   activeMode.value = 'attribute'
 }
 
+const addItem = () => {
+  attributeMatrix[0][30].add('test')
+  attributeMatrix[0][30].add('test2')
+  attributeMatrix[0][30].add('test3')
+  attributeMatrix[0][30].add('test4')
+  attributeMatrix[1][0].add('test')
+  attributeMatrix[1][0].add('test2')
+  attributeMatrix[2][10].add('test')
+  attributeMatrix[2][10].add('test2')
+  attributeMatrix[1][6].add('test')
+  attributeMatrix[2][6].add('test2')
+}
+
 </script>
 
 <template>
-  <div class="w-full h-screen px-10 py-5 test overflow-hidden">
+  <div class="w-full h-screen px-10 py-5 test overflow-hidden relative">
+    <div
+      class="flex flex-col absolute bg-white z-10 border border-black"
+      ref="modal"
+      :class="showModal ? 'block' : 'hidden'"
+    >
+      <span v-for="value in modalValues" :key="value">{{ value }}</span>
+    </div>
     <div class="flex justify-between items-center mb-4 text-white">
       <div class="flex items-center gap-10 text-lg">
         <Logo width="50" height="50" />
         <span v-if="attributeMatrix[0][1].size > 0">Has Entries</span>
+        <button @click="addItem">Add</button>
         <span>Dashboard</span>
         <span>Patienten</span>
         <span>Mitarbeiter</span>
@@ -264,7 +304,7 @@ const attributeMode = () => {
         </div>
       </div>
       <div class="w-full flex justify-center text-center tracking-wide">
-        <table class="w-full">
+        <table class="w-full border-collapse">
           <thead>
             <tr class="cursor-default">
               <th
@@ -292,9 +332,19 @@ const attributeMode = () => {
                 :key="item"
                 class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(2, i)]"
-                @mouseenter="handleMouseEnterEvent(2, i)"
-                @mouseleave="handleMouseLeaveEvent"
-              >{{ item }}</td>
+                @mouseenter="[handleMouseEnterEvent(2, i), i > 1 && i < 33 && attributeMatrix[0][i - 2].size > 0 ? handleShowModal(0, i - 2, $event) : null]"
+                @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
+              >
+                <div class="relative">
+                  {{ item }}
+                  <CornerLowerRightIcon
+                    width="7"
+                    height="7"
+                    class="absolute right-0 bottom-[-7px]"
+                    v-if="i > 1 && i < 33 && attributeMatrix[0][i - 2].size > 0"
+                  />
+                </div>
+              </td>
             </tr>
             <tr>
               <td
@@ -349,9 +399,19 @@ const attributeMode = () => {
                 :key="item"
                 class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(4, i)]"
-                @mouseenter="handleMouseEnterEvent(4, i)"
-                @mouseleave="handleMouseLeaveEvent"
-              >{{ item }}</td>
+                @mouseenter="[handleMouseEnterEvent(4, i), i > 1 && i < 33 && attributeMatrix[1][i - 2].size > 0 ? handleShowModal(1, i - 2, $event) : null]"
+                @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
+              >
+                <div class="relative">
+                  {{ item }}
+                  <CornerLowerRightIcon
+                    width="7"
+                    height="7"
+                    class="absolute right-0 bottom-[-7px]"
+                    v-if="i > 1 && i < 33 && attributeMatrix[1][i - 2].size > 0"
+                  />
+                </div>
+              </td>
             </tr>
             <tr>
               <td
@@ -406,9 +466,19 @@ const attributeMode = () => {
                 :key="item"
                 class="border text-xs text-gray-400 font-thin border-gray-400 py-2"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(6, i)]"
-                @mouseenter="handleMouseEnterEvent(6, i)"
-                @mouseleave="handleMouseLeaveEvent"
-              >{{ item }}</td>
+                @mouseenter="[handleMouseEnterEvent(6, i), , i > 1 && i < 33 && attributeMatrix[2][i - 2].size > 0 ? handleShowModal(2, i - 2, $event) : null]"
+                @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
+              >
+                <div class="relative">
+                  {{ item }}
+                  <CornerLowerRightIcon
+                    width="7"
+                    height="7"
+                    class="absolute right-0 bottom-[-7px]"
+                    v-if="i > 1 && i < 33 && attributeMatrix[2][i - 2].size > 0"
+                  />
+                </div>
+              </td>
             </tr>
             <tr>
               <td
