@@ -214,9 +214,9 @@ const addItem = () => {
 <template>
   <div class="w-full h-screen px-10 py-5 test overflow-hidden relative">
     <div
-      class="flex flex-col absolute bg-white z-10 border border-black"
+      class="flex flex-col absolute bg-bg-accent border-black z-10 px-2 py-1 border text-sm shadow-lg"
       ref="modal"
-      :class="showModal ? 'block' : 'hidden'"
+      :class="showModal ? 'block' : 'hidden', modalValues && modalValues.length < 2 ? 'rounded-md' : 'rounded-lg'"
     >
       <span v-for="value in modalValues" :key="value">{{ value }}</span>
     </div>
