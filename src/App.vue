@@ -203,19 +203,6 @@ const attributeMode = () => {
   activeMode.value = 'attribute'
 }
 
-const addItem = () => {
-  attributeMatrix[0][30].add('test')
-  attributeMatrix[0][30].add('test2')
-  attributeMatrix[0][30].add('test3')
-  attributeMatrix[0][30].add('test4')
-  attributeMatrix[1][0].add('test')
-  attributeMatrix[1][0].add('test2')
-  attributeMatrix[2][10].add('test')
-  attributeMatrix[2][10].add('test2')
-  attributeMatrix[1][6].add('test')
-  attributeMatrix[2][6].add('test2')
-}
-
 </script>
 
 <template>
@@ -230,8 +217,6 @@ const addItem = () => {
     <div class="flex justify-between items-center mb-4 text-white">
       <div class="flex items-center gap-10 text-lg">
         <Logo width="50" height="50" />
-        <span v-if="attributeMatrix[0][1].size > 0">Has Entries</span>
-        <button @click="addItem">Add</button>
         <span>Dashboard</span>
         <span>Patienten</span>
         <span>Mitarbeiter</span>
