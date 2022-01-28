@@ -51,6 +51,7 @@ const sixthRow = ['', 'mittags', ...Array.from(Array(numberOfDaysInMonth), (e, i
 const seventhRow = ['SGB XI HH', 'LK17: Kl. Besorgungen']
 
 const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.value === 'shift' ? 'cursor-pointer' : '')
+const attributeModeCursor = computed(() => activeMode.value === 'attribute' && addAttribute.value.length > 0 ? 'cursor-pointer' : 'cursor-default')
 
 function createValueMatrix(rows: number, columns: number): number[][] {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
@@ -381,7 +382,7 @@ const addItem = () => {
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
                   v-model.number="matrix[0][i]"
-                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2), cursorPointer]"
+                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(0)"
                   @dragstart="activeMode === 'put' ? handlePutStartEvent(0, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(0, i, $event) : null"
                   @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
@@ -448,7 +449,7 @@ const addItem = () => {
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
                   v-model.number="matrix[1][i]"
-                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2), cursorPointer]"
+                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(1)"
                   @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
                   @drop="activeMode === 'shift' ? handleShiftDrop(1, i, $event) : null"
@@ -515,7 +516,7 @@ const addItem = () => {
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
                   class="w-10 text-center py-2 px-2"
                   v-model.number="matrix[2][i]"
-                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2), cursorPointer]"
+                  :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(2)"
                   @dragover.prevent="activeMode === 'shift' ? handleShiftDragOver($event) : null"
                   @drop="activeMode === 'shift' ? handleShiftDrop(2, i, $event) : null"
