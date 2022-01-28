@@ -38,7 +38,9 @@ const putInput = ref<HTMLInputElement>()
 const modal = ref<HTMLDivElement>()
 const showModal = ref<boolean>(false)
 const modalValues = ref<string[]>()
+const addAttribute = ref<string>('')
 
+const attributeList = ['Merkmal 1', 'Merkmal 2', 'Merkmal 3', 'Merkmal 4']
 const tableHead = ['Vertrag', 'Leistung', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), 'A']
 const firstRow = ['', 'Pflegeversicherung', ...createWeeKArray(5, numberOfDaysInMonth), '']
 const secondRow = ['', 'morgens', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), '']
@@ -297,7 +299,15 @@ const addItem = () => {
           <PrintIcon width="30" height="30" />
           <TrashIcon width="30" height="30" />
           <LineIcon width="30" height="30" />
-          <button @click="attributeMode">
+          <button @click="attributeMode" class="relative">
+            <select
+              name="attribute"
+              v-model="addAttribute"
+              v-if="activeMode === 'attribute'"
+              class="absolute top-8 left-[-30px] text-sm font-thin"
+            >
+              <option :key="attribute" :value="attribute" v-for="attribute in attributeList">{{ attribute }}</option>
+            </select>
             <PuzzleIcon width="30" height="30" />
           </button>
           <PlusIcon width="30" height="30" />
