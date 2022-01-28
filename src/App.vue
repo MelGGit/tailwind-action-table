@@ -220,7 +220,7 @@ const attributeMode = () => {
         <span>Dashboard</span>
         <span>Patienten</span>
         <span>Mitarbeiter</span>
-        <button class="bg-button-darker-blue px-4 py-2 rounded-xl">Abrechnung</button>
+        <button class="bg-button-darker-blue px-4 2xl:py-2 py-0 rounded-xl">Abrechnung</button>
       </div>
       <TriPointsIcon width="30" height="30" class="mr-[-10px]" />
     </div>
@@ -303,14 +303,14 @@ const attributeMode = () => {
           <PlusIcon width="30" height="30" />
         </div>
       </div>
-      <div class="w-full flex justify-center text-center tracking-wide">
-        <table class="w-full border-collapse">
+      <div class="w-full flex justify-center text-center tracking-wide overflow-x-auto">
+        <table class="w-full h-full border-collapse xl:text-base lg:text-sm text-xs bg-white overflow-visible">
           <thead>
-            <tr class="cursor-default">
+            <tr class="cursor-default overflow-ellipsis">
               <th
                 v-for="(head, i) in tableHead"
                 :key="head"
-                class="border border-gray-400 py-2 font-normal border-b-black border-b-2"
+                class="border border-gray-400 2xl:py-2 py-0 font-normal border-b-black border-b-2 overflow-ellipsis"
                 :class="[isSunday(i, 4) === '' ? isHoliday(i, 1) === '' ? 'bg-gray-100' : isHoliday(i, 1) : isSunday(i, 4), getHighlightState(0, i)]"
               >{{ head }}</th>
             </tr>
@@ -320,7 +320,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in firstRow"
                 :key="item"
-                class="border text-xs py-2 border-gray-400"
+                class="border text-xs 2xl:py-2 py-0 border-gray-400"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(1, i)]"
                 @mouseenter="handleMouseEnterEvent(1, i)"
                 @mouseleave="handleMouseLeaveEvent"
@@ -330,7 +330,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in secondRow"
                 :key="item"
-                class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
+                class="border text-xs border-gray-400 2xl:py-2 py-0 text-gray-400 font-thin"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(2, i)]"
                 @mouseenter="[handleMouseEnterEvent(2, i), i > 1 && i < 33 && attributeMatrix[0][i - 2].size > 0 ? handleShowModal(0, i - 2, $event) : null]"
                 @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
@@ -340,7 +340,7 @@ const attributeMode = () => {
                   <CornerLowerRightIcon
                     width="7"
                     height="7"
-                    class="absolute right-0 bottom-[-7px]"
+                    class="absolute right-0 2xl:bottom-[-7px] bottom-[1px]"
                     v-if="i > 1 && i < 33 && attributeMatrix[0][i - 2].size > 0"
                   />
                 </div>
@@ -350,7 +350,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in thirdRow"
                 :key="item"
-                class="border border-gray-400 border-b-black border-b-2 px-2"
+                class="border border-gray-400 border-b-black border-b-2 2xl:px-2 px-0 whitespace-nowrap"
                 :class="getHighlightState(3, i)"
                 @mouseenter="handleMouseEnterEvent(3, i)"
                 @mouseleave="handleMouseLeaveEvent"
@@ -369,7 +369,7 @@ const attributeMode = () => {
                   :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[0][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0"
                   v-model.number="matrix[0][i]"
                   :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(3, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(0)"
@@ -386,7 +386,7 @@ const attributeMode = () => {
                   :class="getHighlightState(3, 33)"
                   type="text"
                   disabled
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0 min-w-[12px]"
                   :value="sumFirstMatrixRow"
                   @mouseenter="handleMouseEnterEvent(3, 33)"
                   @mouseleave="handleMouseLeaveEvent"
@@ -397,7 +397,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in fourthRow"
                 :key="item"
-                class="border text-xs border-gray-400 py-2 text-gray-400 font-thin"
+                class="border text-xs border-gray-400 2xl:py-2 py-0 text-gray-400 font-thin"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(4, i)]"
                 @mouseenter="[handleMouseEnterEvent(4, i), i > 1 && i < 33 && attributeMatrix[1][i - 2].size > 0 ? handleShowModal(1, i - 2, $event) : null]"
                 @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
@@ -407,7 +407,7 @@ const attributeMode = () => {
                   <CornerLowerRightIcon
                     width="7"
                     height="7"
-                    class="absolute right-0 bottom-[-7px]"
+                    class="absolute right-0 2xl:bottom-[-7px] bottom-[1px]"
                     v-if="i > 1 && i < 33 && attributeMatrix[1][i - 2].size > 0"
                   />
                 </div>
@@ -417,7 +417,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in fifthRow"
                 :key="item"
-                class="border border-gray-400 border-b-black border-b-2 px-2"
+                class="border border-gray-400 border-b-black border-b-2 2xl:px-2 px-0 whitespace-nowrap"
                 :class="getHighlightState(5, i)"
                 @mouseenter="handleMouseEnterEvent(5, i)"
                 @mouseleave="handleMouseLeaveEvent"
@@ -436,7 +436,7 @@ const attributeMode = () => {
                   :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[1][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0"
                   v-model.number="matrix[1][i]"
                   :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(5, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(1)"
@@ -453,7 +453,7 @@ const attributeMode = () => {
                   :class="getHighlightState(5, 33)"
                   type="text"
                   disabled
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0"
                   :value="sumSecondMatrixRow"
                   @mouseenter="handleMouseEnterEvent(5, 33)"
                   @mouseleave="handleMouseLeaveEvent"
@@ -464,7 +464,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in sixthRow"
                 :key="item"
-                class="border text-xs text-gray-400 font-thin border-gray-400 py-2"
+                class="border text-xs text-gray-400 font-thin border-gray-400 2xl:py-2 py-0"
                 :class="[isSunday(i, 4), isHoliday(i, 1), getHighlightState(6, i)]"
                 @mouseenter="[handleMouseEnterEvent(6, i), , i > 1 && i < 33 && attributeMatrix[2][i - 2].size > 0 ? handleShowModal(2, i - 2, $event) : null]"
                 @mouseleave="[handleMouseLeaveEvent(), closeModal()]"
@@ -474,7 +474,7 @@ const attributeMode = () => {
                   <CornerLowerRightIcon
                     width="7"
                     height="7"
-                    class="absolute right-0 bottom-[-7px]"
+                    class="absolute right-0 2xl:bottom-[-7px] bottom-[1px]"
                     v-if="i > 1 && i < 33 && attributeMatrix[2][i - 2].size > 0"
                   />
                 </div>
@@ -484,7 +484,7 @@ const attributeMode = () => {
               <td
                 v-for="(item, i) in seventhRow"
                 :key="item"
-                class="border border-gray-400 px-2"
+                class="border border-gray-400 2xl:px-2 px-0 whitespace-nowrap"
                 :class="getHighlightState(7, i)"
                 @mouseenter="handleMouseEnterEvent(7, i)"
                 @mouseleave="handleMouseLeaveEvent"
@@ -503,7 +503,7 @@ const attributeMode = () => {
                   :readonly="activeMode === 'put' || activeMode === 'shift' || activeMode === 'attribute'"
                   :draggable="activeMode === 'put' || (activeMode === 'shift' && Number(matrix[2][i]) > 0)"
                   :dropzone="activeMode === 'put' || activeMode === 'shift'"
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0"
                   v-model.number="matrix[2][i]"
                   :class="[isSunday(i, 6), isHoliday(i, -1), getHighlightState(7, i + 2), cursorPointer, attributeModeCursor]"
                   @change="sumOfMatrixRow(2)"
@@ -520,7 +520,7 @@ const attributeMode = () => {
                   :class="getHighlightState(7, 33)"
                   type="text"
                   disabled
-                  class="w-10 text-center py-2 px-2"
+                  class="w-full text-center 2xl:py-2 py-0 2xl:px-2 px-0"
                   :value="sumThirdMatrixRow"
                   @mouseenter="handleMouseEnterEvent(7, 33)"
                   @mouseleave="handleMouseLeaveEvent"
