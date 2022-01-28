@@ -172,6 +172,10 @@ const handleShowModal = (row: number, col: number, event: MouseEvent) => {
   showModal.value = true
 }
 
+const handleAddAttribute = (row: number, col: number) => {
+  attributeMatrix[row][col].add(addAttribute.value)
+}
+
 const closeModal = () => {
   showModal.value = false
   modalValues.value = []
@@ -389,7 +393,7 @@ const addItem = () => {
                   @drop="activeMode === 'shift' ? handleShiftDrop(0, i, $event) : null"
                   @dragenter="activeMode === 'put' ? handlePutEvent(0, i, $event) : null, handleMouseEnterEvent(3, i + 2)"
                   @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
-                  @click="activeMode === 'put' ? updateValueOnPut(0, i) : null"
+                  @click="[activeMode === 'put' ? updateValueOnPut(0, i) : null, activeMode === 'attribute' && addAttribute.length > 0 ? handleAddAttribute(0, i) : null]"
                 />
               </td>
               <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(3, 33)">
@@ -456,7 +460,7 @@ const addItem = () => {
                   @dragstart="activeMode === 'put' ? handlePutStartEvent(1, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(1, i, $event) : null"
                   @dragenter="activeMode === 'put' ? handlePutEvent(1, i, $event) : null, handleMouseEnterEvent(5, i + 2)"
                   @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
-                  @click="activeMode === 'put' ? updateValueOnPut(1, i) : null"
+                  @click="[activeMode === 'put' ? updateValueOnPut(1, i) : null, activeMode === 'attribute' && addAttribute.length > 0 ? handleAddAttribute(1, i) : null]"
                 />
               </td>
               <td class="border border-gray-400 border-b-black border-b-2" :class="getHighlightState(5, 33)">
@@ -523,7 +527,7 @@ const addItem = () => {
                   @dragstart="activeMode === 'put' ? handlePutStartEvent(2, i, $event) : null, activeMode === 'shift' ? handleShiftDragStart(2, i, $event) : null"
                   @dragenter="activeMode === 'put' ? handlePutEvent(2, i, $event) : null, handleMouseEnterEvent(7, i + 2)"
                   @dragleave="activeMode === 'put' ? handleMouseLeaveEvent : null"
-                  @click="activeMode === 'put' ? updateValueOnPut(2, i) : null"
+                  @click="[activeMode === 'put' ? updateValueOnPut(2, i) : null, activeMode === 'attribute' && addAttribute.length > 0 ? handleAddAttribute(2, i) : null]"
                 />
               </td>
               <td class="border border-gray-400" :class="getHighlightState(7, 33)">
