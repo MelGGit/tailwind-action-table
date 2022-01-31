@@ -50,8 +50,8 @@ const fifthRow = ['SGB XI HH', 'LK5: Lagern/Betten']
 const sixthRow = ['', 'mittags', ...Array.from(Array(numberOfDaysInMonth), (e, i) => i + 1), '']
 const seventhRow = ['SGB XI HH', 'LK17: Kl. Besorgungen']
 
-const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.value === 'shift' ? 'cursor-pointer' : '')
-const attributeModeCursor = computed(() => activeMode.value === 'attribute' && addAttribute.value.length > 0 ? 'cursor-pointer' : 'cursor-default')
+const cursorPointer = computed(() => activeMode.value === 'put' || activeMode.value === 'shift' ? '!cursor-pointer' : '')
+const attributeModeCursor = computed(() => activeMode.value === 'attribute' && addAttribute.value.length > 0 ? '!cursor-pointer' : 'cursor-default')
 
 function createValueMatrix(rows: number, columns: number): number[][] {
   return Array.from(Array(rows), () => new Array(columns).fill(1))
